@@ -263,13 +263,17 @@ class Order(models.Model):
         on_delete=models.CASCADE,
     )
 
-    def __str__(self):
-        return str(self.datatime)
-
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Список заказов"
         ordering = ("-datatime",)
+
+    def __str__(self):
+        return str(self.datatime)
+
+    # @property
+    # def sum(self):
+    #     return self.ordered_items.aggregate(total=Sum("quantity"))["total"]
 
 
 class OrderItem(models.Model):
