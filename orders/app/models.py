@@ -207,7 +207,7 @@ class ProductParameter(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-    value = models.CharField(max_length=66, verbose_name="Значение")
+    value = models.CharField(max_length=100, verbose_name="Значение")
 
     class Meta:
         verbose_name = "Параметр"
@@ -227,20 +227,20 @@ class Contact(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-    city = models.CharField(max_length=66, verbose_name="Город")
-    street = models.CharField(max_length=66, verbose_name="Улица")
-    house = models.CharField(max_length=66, verbose_name="Дом", blank=True)
-    structure = models.CharField(max_length=66, verbose_name="Корпус", blank=True)
-    building = models.CharField(max_length=66, verbose_name="Строение", blank=True)
-    apartment = models.CharField(max_length=66, verbose_name="Квартира", blank=True)
-    phone = models.CharField(max_length=13, verbose_name="Телефон")
-
-    def __str__(self):
-        return f"{self.city} {self.street} {self.house}"
+    city = models.CharField(max_length=50, verbose_name="Город")
+    street = models.CharField(max_length=100, verbose_name="Улица")
+    house = models.CharField(max_length=15, verbose_name="Дом", blank=True)
+    structure = models.CharField(max_length=15, verbose_name="Корпус", blank=True)
+    building = models.CharField(max_length=15, verbose_name="Строение", blank=True)
+    apartment = models.CharField(max_length=15, verbose_name="Квартира", blank=True)
+    phone = models.CharField(max_length=20, verbose_name="Телефон")
 
     class Meta:
         verbose_name = "Информация о пользователе"
         verbose_name_plural = "Список контактов пользователя"
+
+    def __str__(self):
+        return f"{self.city} {self.street} {self.house}"
 
 
 class Order(models.Model):
@@ -253,7 +253,7 @@ class Order(models.Model):
     )
     datatime = models.DateTimeField(auto_now_add=True)
     state = models.CharField(
-        max_length=25, verbose_name="Статус", choices=STATE_CHOICES
+        max_length=15, verbose_name="Статус", choices=STATE_CHOICES
     )
     contact = models.ForeignKey(
         Contact,

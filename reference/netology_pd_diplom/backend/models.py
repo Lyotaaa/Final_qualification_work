@@ -185,7 +185,7 @@ class Parameter(models.Model):
 
     class Meta:
         verbose_name = "Имя параметра"
-        verbose_name_plural = "Список имен параметров"
+        verbose_name_plural = "Список параметров"
         ordering = ("-name",)
 
     def __str__(self):
@@ -207,7 +207,7 @@ class ProductParameter(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-    value = models.CharField(verbose_name="Значение", max_length=100)
+    value = models.CharField(max_length=100, verbose_name="Значение")
 
     class Meta:
         verbose_name = "Параметр"
@@ -254,10 +254,14 @@ class Order(models.Model):
     )
     dt = models.DateTimeField(auto_now_add=True)
     state = models.CharField(
-        verbose_name="Статус", choices=STATE_CHOICES, max_length=15
+        max_length=15, verbose_name="Статус", choices=STATE_CHOICES
     )
     contact = models.ForeignKey(
-        Contact, verbose_name="Контакт", blank=True, null=True, on_delete=models.CASCADE
+        Contact,
+        verbose_name="Контакт",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
     )
 
     class Meta:
