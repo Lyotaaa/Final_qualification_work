@@ -155,7 +155,7 @@ class ProductInfo(models.Model):
     product = models.ForeignKey(
         Product,
         verbose_name="Продукт",
-        related_name="products",
+        related_name="product_infos",
         blank=True,
         on_delete=models.CASCADE,
     )
