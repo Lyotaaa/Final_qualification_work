@@ -322,8 +322,8 @@ class ConfirmEmailToken(models.Model):
     )
 
     class Meta:
-        verbose_name = "Токен подтверждения email"
-        verbose_name_plural = "Токены подтверждения email"
+        verbose_name = "Токен подтверждения Email"
+        verbose_name_plural = "Токены подтверждения Email"
 
     @staticmethod
     def generate_key():

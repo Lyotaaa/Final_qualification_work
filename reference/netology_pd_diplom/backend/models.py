@@ -316,9 +316,9 @@ class ConfirmEmailToken(models.Model):
     # Ключевое поле, хотя оно и не является первичным ключом модели
     key = models.CharField(
         _("Key"),
-        max_length=64, 
+        max_length=64,
         db_index=True,
-        unique=True
+        unique=True,
     )
 
     class Meta:
