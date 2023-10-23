@@ -171,8 +171,8 @@ class ProductInfo(models.Model):
     price_rrc = models.PositiveIntegerField(verbose_name="Розничная цена")
 
     class Meta:
-        verbose_name = "Информация о продуктах"
-        verbose_name_plural = "Список продуктов"
+        verbose_name = "Информация о продукте"
+        verbose_name_plural = "Список о продуктов"
         constraints = [
             models.UniqueConstraint(
                 fields=["product", "shop", "external_id"], name="unique_product_info"
@@ -183,13 +183,13 @@ class ProductInfo(models.Model):
 class Parameter(models.Model):
     name = models.CharField(max_length=66, verbose_name="Название")
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         verbose_name = "Имя параметра"
         verbose_name_plural = "Список параметров"
         ordering = ("-name",)
+
+    def __str__(self):
+        return self.name
 
 
 class ProductParameter(models.Model):

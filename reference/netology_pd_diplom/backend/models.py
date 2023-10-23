@@ -168,11 +168,11 @@ class ProductInfo(models.Model):
     )
     quantity = models.PositiveIntegerField(verbose_name="Количество")
     price = models.PositiveIntegerField(verbose_name="Цена")
-    price_rrc = models.PositiveIntegerField(verbose_name="Рекомендуемая розничная цена")
+    price_rrc = models.PositiveIntegerField(verbose_name="Розничная цена")
 
     class Meta:
         verbose_name = "Информация о продукте"
-        verbose_name_plural = "Информационный список о продуктах"
+        verbose_name_plural = "Список о продуктов"
         constraints = [
             models.UniqueConstraint(
                 fields=["product", "shop", "external_id"], name="unique_product_info"
