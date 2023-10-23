@@ -329,7 +329,7 @@ class ConfirmEmailToken(models.Model):
     def generate_key():
         """генерирует псевдослучайный код с помощью операционной системы.urandom и binascii.hexlify"""
         return get_token_generator().generate_token()
-    
+
     def save(self, *args, **kwargs):
         if not self.key:
             self.key = self.generate_key()
