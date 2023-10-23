@@ -284,7 +284,6 @@ class OrderItem(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-
     product_info = models.ForeignKey(
         ProductInfo,
         verbose_name="Информация о продукте",
