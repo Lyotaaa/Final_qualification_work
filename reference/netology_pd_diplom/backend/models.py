@@ -162,7 +162,7 @@ class ProductInfo(models.Model):
     shop = models.ForeignKey(
         Shop,
         verbose_name="Магазин",
-        related_name="product_infos",
+        related_name="product_info",
         blank=True,
         on_delete=models.CASCADE,
     )
