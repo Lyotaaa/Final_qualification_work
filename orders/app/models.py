@@ -1,9 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
-from django.db import models
 
 STATE_CHOICES = (
     ("basket", "Корзина"),
@@ -61,7 +61,7 @@ class User(AbstractUser):
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(
         _("username"),
-        max_length=113,
+        max_length=150,
         help_text=_(
             "Требуется не более 150 символов. Только буквы, цифры и @/./+/-/_."
         ),
@@ -287,7 +287,7 @@ class OrderItem(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-    quantity  = models.PositiveIntegerField(verbose_name="Количество")
+    price = models.PositiveIntegerField(verbose_name="Количество")
 
     class Meta:
         verbose_name = "Заказанная позиция"

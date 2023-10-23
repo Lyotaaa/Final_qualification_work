@@ -6,11 +6,11 @@ from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
 
 STATE_CHOICES = (
-    ("basket", "Статус корзины"),
+    ("basket", "Корзина"),
     ("new", "Новый"),
     ("confirmed", "Подтвержден"),
     ("assembled", "Собран"),
-    ("sent", "Отправлен"),
+    ("sent", "Отправлено"),
     ("delivered", "Доставлен"),
     ("canceled", "Отменен"),
 )
@@ -21,20 +21,11 @@ USER_TYPE_CHOICES = (
 )
 
 
-# Create your models here.
-
-
 class UserManager(BaseUserManager):
-    """
-    Миксин для управления пользователями
-    """
-
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):
-        """
-        Create and save a user with the given username, email, and password.
-        """
+        """Создайте и сохраните пользователя с указанным именем пользователя, адресом электронной почты и паролем."""
         if not email:
             raise ValueError("The given email must be set")
         email = self.normalize_email(email)
@@ -61,10 +52,6 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    """
-    Стандартная модель пользователей
-    """
-
     REQUIRED_FIELDS = []
     objects = UserManager()
     USERNAME_FIELD = "email"
@@ -76,11 +63,11 @@ class User(AbstractUser):
         _("username"),
         max_length=150,
         help_text=_(
-            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+            "Требуется не более 150 символов. Только буквы, цифры и @/./+/-/_."
         ),
         validators=[username_validator],
         error_messages={
-            "unique": _("A user with that username already exists."),
+            "unique": _("Пользователь с таким именем пользователя уже существует"),
         },
     )
     is_active = models.BooleanField(
