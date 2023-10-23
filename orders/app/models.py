@@ -287,7 +287,7 @@ class OrderItem(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-    price = models.PositiveIntegerField(verbose_name="Количество")
+    quantity  = models.PositiveIntegerField(verbose_name="Количество")
 
     class Meta:
         verbose_name = "Заказанная позиция"
