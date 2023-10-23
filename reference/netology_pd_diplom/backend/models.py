@@ -310,13 +310,17 @@ class ConfirmEmailToken(models.Model):
         related_name="confirm_email_tokens",
         on_delete=models.CASCADE,
     )
-
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_("When was this token generated")
     )
 
     # Key field, though it is not the primary key of the model
-    key = models.CharField(_("Key"), max_length=64, db_index=True, unique=True)
+    key = models.CharField(
+        _("Key"),
+        max_length=64, 
+        db_index=True,
+        unique=True
+    )
 
     class Meta:
         verbose_name = "Токен подтверждения Email"

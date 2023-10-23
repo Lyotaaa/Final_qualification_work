@@ -315,7 +315,7 @@ class ConfirmEmailToken(models.Model):
     )
     key = models.CharField(
         _("Key"),
-        max_length=32,
+        max_length=64,
         db_index=True,
         unique=True,
     )
