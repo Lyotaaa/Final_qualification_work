@@ -308,7 +308,6 @@ class ConfirmEmailToken(models.Model):
         User,
         verbose_name="Пользователь, который связан с этим токеном сброса пароля",
         related_name="confirm_email_tokens",
-        blank=True,
         on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField(

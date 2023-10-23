@@ -306,9 +306,9 @@ class OrderItem(models.Model):
 class ConfirmEmailToken(models.Model):
     user = models.ForeignKey(
         User,
+        verbose_name="Пользователь, который связан с этим токеном сброса пароля",
         related_name="confirm_email_tokens",
         on_delete=models.CASCADE,
-        verbose_name=_("The User which is associated to this password reset token"),
     )
 
     created_at = models.DateTimeField(
