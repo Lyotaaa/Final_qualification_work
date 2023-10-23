@@ -311,10 +311,10 @@ class ConfirmEmailToken(models.Model):
         on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField(
-        auto_now_add=True, verbose_name=_("When was this token generated")
+        auto_now_add=True, verbose_name=_("Когда был сгенерирован этот токен.")
     )
 
-    # Key field, though it is not the primary key of the model
+    # Ключевое поле, хотя оно и не является первичным ключом модели
     key = models.CharField(
         _("Key"),
         max_length=64, 

@@ -313,6 +313,7 @@ class ConfirmEmailToken(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Когда был сгенерирован этот токен."
     )
+    # Ключевое поле, хотя оно и не является первичным ключом модели
     key = models.CharField(
         _("Key"),
         max_length=64,
