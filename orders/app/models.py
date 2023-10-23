@@ -215,7 +215,7 @@ class ProductParameter(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["product_info", "parameter"], name="unique_product_parameter"
-            )
+            ),
         ]
 
 
