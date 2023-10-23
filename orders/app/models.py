@@ -85,17 +85,17 @@ class User(AbstractUser):
         default="buyer",
     )
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Список пользователей"
         ordering = ("email",)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Shop(models.Model):
-    name = models.CharField(max_length=66, verbose_name="Название")
+    name = models.CharField(max_length=50, verbose_name="Название")
     url = models.URLField(verbose_name="Ссылка", null=True, blank=True)
     user = models.OneToOneField(
         User,
@@ -106,13 +106,13 @@ class Shop(models.Model):
     )
     state = models.BooleanField(verbose_name="Статус получения заказов", default=True)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         verbose_name = "Магазин"
         verbose_name_plural = "Список магазинов"
         ordering = ("-name",)
+
+    def __str__(self):
+        return self.name
 
 
 class Category(models.Model):

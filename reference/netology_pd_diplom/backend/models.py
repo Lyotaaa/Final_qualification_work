@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
     def _create_user(self, email, password, **extra_fields):
         """Создайте и сохраните пользователя с указанным именем пользователя, адресом электронной почты и паролем."""
         if not email:
-            raise ValueError("The given email must be set")
+            raise ValueError("Не указан адрес электронной почты.")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -74,8 +74,8 @@ class User(AbstractUser):
         _("active"),
         default=False,
         help_text=_(
-            "Designates whether this user should be treated as active. "
-            "Unselect this instead of deleting accounts."
+            "Указывает, должен ли данный пользователь считаться активным.",
+            "Снимите этот флажок вместо удаления учетных записей.",
         ),
     )
     type = models.CharField(
@@ -85,13 +85,13 @@ class User(AbstractUser):
         default="buyer",
     )
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Список пользователей"
         ordering = ("email",)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class Shop(models.Model):
@@ -104,9 +104,7 @@ class Shop(models.Model):
         null=True,
         on_delete=models.CASCADE,
     )
-    state = models.BooleanField(verbose_name="статус получения заказов", default=True)
-
-    # filename
+    state = models.BooleanField(verbose_name="Статус получения заказов", default=True)
 
     class Meta:
         verbose_name = "Магазин"
