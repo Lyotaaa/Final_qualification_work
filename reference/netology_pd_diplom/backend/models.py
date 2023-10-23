@@ -227,7 +227,6 @@ class Contact(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-
     city = models.CharField(max_length=50, verbose_name="Город")
     street = models.CharField(max_length=100, verbose_name="Улица")
     house = models.CharField(max_length=15, verbose_name="Дом", blank=True)
@@ -237,7 +236,7 @@ class Contact(models.Model):
     phone = models.CharField(max_length=20, verbose_name="Телефон")
 
     class Meta:
-        verbose_name = "Контакты пользователя"
+        verbose_name = "Информация о пользователе"
         verbose_name_plural = "Список контактов пользователя"
 
     def __str__(self):
@@ -252,7 +251,7 @@ class Order(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-    dt = models.DateTimeField(auto_now_add=True)
+    datatime = models.DateTimeField(auto_now_add=True)
     state = models.CharField(
         max_length=15, verbose_name="Статус", choices=STATE_CHOICES
     )
@@ -267,7 +266,7 @@ class Order(models.Model):
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Список заказ"
-        ordering = ("-dt",)
+        ordering = ("-datatime",)
 
     def __str__(self):
         return str(self.dt)
