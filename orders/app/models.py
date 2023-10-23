@@ -162,7 +162,7 @@ class ProductInfo(models.Model):
     shop = models.ForeignKey(
         Shop,
         verbose_name="Магазин",
-        related_name="product_info",
+        related_name="product_info",a
         blank=True,
         on_delete=models.CASCADE,
     )
@@ -194,7 +194,7 @@ class Parameter(models.Model):
 
 class ProductParameter(models.Model):
     product_info = models.ForeignKey(
-        Product,
+        ProductInfo,
         verbose_name="Информация о продукте",
         related_name="product_parameters",
         blank=True,
