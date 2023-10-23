@@ -264,7 +264,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return self.datatime
+        return str(self.datatime)
 
     class Meta:
         verbose_name = "Заказ"
