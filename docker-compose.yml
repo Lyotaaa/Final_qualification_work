@@ -1,0 +1,14 @@
+version: "3.9"
+
+volumes:
+  pg-data:
+
+services:
+  db:
+    image: postgres:14.3-alpine3.15
+    ports:
+      - "5434:5434"
+    env_file:
+      - ./orders/orders/.env
+    volumes:
+      - pg-data:/var/lib/postgresql/data

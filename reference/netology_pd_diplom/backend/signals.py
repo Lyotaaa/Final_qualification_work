@@ -6,11 +6,11 @@ from django_rest_passwordreset.signals import reset_password_token_created
 from backend.models import ConfirmEmailToken, User
 
 new_user_registered = Signal(
-    providing_args=['user_id'],
+    providing_args=["user_id"],
 )
 
 new_order = Signal(
-    providing_args=['user_id'],
+    providing_args=["user_id"],
 )
 
 
@@ -35,7 +35,7 @@ def password_reset_token_created(sender, instance, reset_password_token, **kwarg
         # from:
         settings.EMAIL_HOST_USER,
         # to:
-        [reset_password_token.user.email]
+        [reset_password_token.user.email],
     )
     msg.send()
 
@@ -56,7 +56,7 @@ def new_user_registered_signal(user_id, **kwargs):
         # from:
         settings.EMAIL_HOST_USER,
         # to:
-        [token.user.email]
+        [token.user.email],
     )
     msg.send()
 
@@ -73,10 +73,10 @@ def new_order_signal(user_id, **kwargs):
         # title:
         f"Обновление статуса заказа",
         # message:
-        'Заказ сформирован',
+        "Заказ сформирован",
         # from:
         settings.EMAIL_HOST_USER,
         # to:
-        [user.email]
+        [user.email],
     )
     msg.send()
