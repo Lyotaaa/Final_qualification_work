@@ -176,12 +176,12 @@ class ProductInfo(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["product", "shop", "external_id"], name="unique_product_info"
-            )
+            ),
         ]
 
 
 class Parameter(models.Model):
-    name = models.CharField(max_length=66, verbose_name="Название")
+    name = models.CharField(max_length=40, verbose_name="Название")
 
     class Meta:
         verbose_name = "Имя параметра"
