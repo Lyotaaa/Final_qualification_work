@@ -7,7 +7,7 @@ services:
   db:
     image: postgres:14.3-alpine3.15
     ports:
-      - "5434:5434"
+      - "5434:5432"
     env_file:
       - ./orders/orders/.env
     volumes:
