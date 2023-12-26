@@ -28,13 +28,15 @@ class UserManager(BaseUserManager):
         """Создайте и сохраните пользователя с указанным именем пользователя, адресом электронной почты и паролем."""
         if not email:
             raise ValueError("Не указан адрес электронной почты.")
+        if not password:
+            raise ValueError("Не указан пароль")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
