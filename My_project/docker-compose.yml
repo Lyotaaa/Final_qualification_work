@@ -9,6 +9,6 @@ services:
     ports:
       - "5434:5432"
     env_file:
-      - ./orders/orders/.env
+      - ./my_project/.env
     volumes:
       - pg-data:/var/lib/postgresql/data

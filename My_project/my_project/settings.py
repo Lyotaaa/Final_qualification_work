@@ -130,9 +130,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 """Добавил с примера"""
-#AUTH_USER_MODEL = "backend.User"
+AUTH_USER_MODEL = "backend.User"
 """Добавил с примера"""
-#EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
