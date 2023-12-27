@@ -1,7 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
-
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
 from django.db import models
@@ -80,7 +79,7 @@ class User(AbstractUser):
         _("active"),
         default=False,
         help_text=_(
-            "Указывает, должен ли данный пользователь считаться активным.",
+            "Указывает, должен ли данный пользователь считаться активным."
             "Снимите этот флажок вместо удаления учетных записей.",
         ),
     )
@@ -317,7 +316,7 @@ class ConfirmEmailToken(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Когда был сгенерирован этот токен.")
     )
-    
+
     # Ключевое поле, хотя оно и не является первичным ключом модели
     key = models.CharField(
         _("Key"),
