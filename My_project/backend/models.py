@@ -52,9 +52,7 @@ class UserManager(BaseUserManager):
                 "У суперпользователя должно быть значение is_superuser=True."
             )
         if extra_fields.get("is_active") is not True:
-            raise  ValueError(
-                "Супер пользователь должны быть is_active=True"
-            )
+            raise ValueError("Супер пользователь должны быть is_active=True")
         return self._create_user(email, password, **extra_fields)
 
 
@@ -234,6 +232,7 @@ class Contact(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
+
     city = models.CharField(max_length=50, verbose_name="Город")
     street = models.CharField(max_length=100, verbose_name="Улица")
     house = models.CharField(max_length=15, verbose_name="Дом", blank=True)
@@ -291,6 +290,7 @@ class OrderItem(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
+
     product_info = models.ForeignKey(
         ProductInfo,
         verbose_name="Информация о продукте",
@@ -320,6 +320,7 @@ class ConfirmEmailToken(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Когда был сгенерирован этот токен.")
     )
+
     # Ключевое поле, хотя оно и не является первичным ключом модели
     key = models.CharField(
         _("Key"),
