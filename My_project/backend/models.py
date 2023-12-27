@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
+
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
 from django.db import models
@@ -277,10 +278,6 @@ class Order(models.Model):
     def __str__(self):
         return str(self.datatime)
 
-    # @property
-    # def sum(self):
-    #     return self.ordered_items.aggregate(total=Sum("quantity"))["total"]
-
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
@@ -313,14 +310,14 @@ class OrderItem(models.Model):
 class ConfirmEmailToken(models.Model):
     user = models.ForeignKey(
         User,
-        verbose_name="Пользователь, который связан с этим токеном сброса пароля",
+        verbose_name=_("Пользователь, который связан с этим токеном сброса пароля"),
         related_name="confirm_email_tokens",
         on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Когда был сгенерирован этот токен.")
     )
-
+    
     # Ключевое поле, хотя оно и не является первичным ключом модели
     key = models.CharField(
         _("Key"),
@@ -335,7 +332,7 @@ class ConfirmEmailToken(models.Model):
 
     @staticmethod
     def generate_key():
-        """генерирует псевдослучайный код с помощью операционной системы.urandom и binascii.hexlify"""
+        """Генерирует псевдослучайный код с помощью операционной системы.urandom и binascii.hexlify"""
         return get_token_generator().generate_token()
 
     def save(self, *args, **kwargs):
