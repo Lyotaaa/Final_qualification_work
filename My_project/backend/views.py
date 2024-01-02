@@ -38,6 +38,17 @@ from backend.serializers import (
 from backend.signals import new_user_registered, new_order
 
 
+def login_required(request):
+    if not request.user.is_authenticated:
+        return JsonResponse(
+            {"Status": False, "Error": "Требуется вход в систему"}, status=403
+        )
+def only_for_shops(request):
+        if request.user.type != "shop":
+            return JsonResponse(
+                {"Status": False, "Error": "Только для магазинов"}, status=403
+            )
+
 class RegisterAccount(APIView):
     # Для регистрации покупателей
     def post(self, request, *args, **kwargs):
@@ -111,20 +122,13 @@ class AccountDetails(APIView):
     # Класс для работы данными пользователя
     # получить данные пользователя
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
-
+        login_required(request)
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
     # Редактирование методом POST
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         # Проверяем обязательные аргументы
         if "password" in request.data:
             errors = {}
@@ -206,10 +210,7 @@ class BasketView(APIView):
     # Класс для работы с корзиной пользователя
     # Получить корзину
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         basket = (
             Order.objects.filter(user_id=request.user.id, state="basket")
             .prefetch_related(
@@ -229,10 +230,7 @@ class BasketView(APIView):
 
     # Редактировать корзину
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         items_sting = request.data.get("items")
         if items_sting:
             try:
@@ -269,10 +267,7 @@ class BasketView(APIView):
 
     # Удалить товары из корзины
     def delete(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         items_sting = request.data.get("items")
         if items_sting:
             items_list = items_sting.split(",")
@@ -294,10 +289,7 @@ class BasketView(APIView):
 
     # Добавить позицию в корзину
     def put(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         items_sting = request.data.get("items")
         if items_sting:
             try:
@@ -330,14 +322,8 @@ class BasketView(APIView):
 class PartnerUpdate(APIView):
     # Класс для обновления пайса от поставщика
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
-        if request.user.type != "shop":
-            return JsonResponse(
-                {"Status": False, "Error": "Только для магазинов"}, status=403
-            )
+        login_required(request)
+        only_for_shops(request)
         url = request.data.get("url")
         if url:
             validate_url = URLValidator()
@@ -388,28 +374,16 @@ class PartnerState(APIView):
     # Класс для работы со статусом поставщика
     # получить текущий статус
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
-        if request.user.type != "shop":
-            return JsonResponse(
-                {"Status": False, "Error": "Только для магазинов"}, status=403
-            )
+        login_required(request)
+        only_for_shops(request)
         shop = request.user.shop
         serializer = ShopSerializer(shop)
         return Response(serializer.data)
 
     # Изменить текущий статус
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
-        if request.user.type != "shop":
-            return JsonResponse(
-                {"Status": False, "Error": "Только для магазинов"}, status=403
-            )
+        login_required(request)
+        only_for_shops(request)
         state = request.data.get("state")
         if state:
             try:
@@ -427,14 +401,8 @@ class PartnerState(APIView):
 class PartnerOrders(APIView):
     # Класс для получения заказов поставщиками
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
-        if request.user.type != "shop":
-            return JsonResponse(
-                {"Status": False, "Error": "Только для магазинов"}, status=403
-            )
+        login_required(request)
+        only_for_shops(request)
         order = (
             Order.objects.filter(
                 ordered_items__product_info__shop__user_id=request.user.id
@@ -461,20 +429,14 @@ class ContactView(APIView):
     # Класс для работы с контактами покупателей
     # получить мои контакты
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         contact = Contact.objects.filter(user_id=request.user.id)
         serializer = ContactSerializer(contact, many=True)
         return Response(serializer.data)
 
     # Добавить новый контакт
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         if {"city", "street", "phone"}.issubset(request.data):
             request.data._mutable = True
             request.data.update({"user": request.user.id})
@@ -489,10 +451,7 @@ class ContactView(APIView):
         )
 
     def delete(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         items_sting = request.data.get("items")
         if items_sting:
             items_list = items_sting.split(",")
@@ -511,10 +470,7 @@ class ContactView(APIView):
 
     # Редактировать контакт
     def put(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         if "id" in request.data:
             if request.data["id"].isdigit():
                 contact = Contact.objects.filter(
@@ -541,10 +497,7 @@ class OrderView(APIView):
     # Класс для получения и размещения заказов пользователями
     # получить мои заказы
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         order = (
             Order.objects.filter(user_id=request.user.id)
             .exclude(state="basket")
@@ -566,10 +519,7 @@ class OrderView(APIView):
 
     # Разместить заказ из корзины
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse(
-                {"Status": False, "Error": "Требуется вход в систему"}, status=403
-            )
+        login_required(request)
         if {"id", "contact"}.issubset(request.data):
             if request.data["id"].isdigit():
                 try:
