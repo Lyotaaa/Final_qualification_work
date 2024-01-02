@@ -53,6 +53,7 @@ def new_user_registered_signal(user_id, **kwargs):
     )
     msg.send()
 
+
 @receiver(new_order)
 def new_order_signal(user_id, **kwargs):
     # Отправляем письмо при изменении статуса заказа
