@@ -43,11 +43,14 @@ def login_required(request):
         return JsonResponse(
             {"Status": False, "Error": "Требуется вход в систему"}, status=403
         )
+
+
 def only_for_shops(request):
-        if request.user.type != "shop":
-            return JsonResponse(
-                {"Status": False, "Error": "Только для магазинов"}, status=403
-            )
+    if request.user.type != "shop":
+        return JsonResponse(
+            {"Status": False, "Error": "Только для магазинов"}, status=403
+        )
+
 
 class RegisterAccount(APIView):
     # Для регистрации покупателей
