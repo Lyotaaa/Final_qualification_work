@@ -35,7 +35,7 @@ from backend.serializers import (
     OrderSerializer,
     ContactSerializer,
 )
-from backend.signals import new_user_registered, new_order
+from backend.signals import new_user_registered_signal, new_order_signal
 
 
 def login_required(request):
@@ -86,7 +86,7 @@ class RegisterAccount(APIView):
                     user = user_serializer.save()
                     user.set_password(request.data["password"])
                     user.save()
-                    new_user_registered.send(sender=self.__class__, user_id=user.id)
+                    new_user_registered_signal.send(sender=self.__class__, user_id=user.id)
                     return JsonResponse({"Status": True})
                 else:
                     return JsonResponse(
@@ -536,7 +536,7 @@ class OrderView(APIView):
                     )
                 else:
                     if is_updated:
-                        new_order.send(sender=self.__class__, user_id=request.user.id)
+                        new_order_signal.send(sender=self.__class__, user_id=request.user.id)
                         return JsonResponse({"Status": True})
         return JsonResponse(
             {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
