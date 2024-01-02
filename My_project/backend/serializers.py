@@ -137,7 +137,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "id",
             "ordered_items",
             "state",
-            "dt",
+            "datatime",
             "total_sum",
             "contact",
         )
