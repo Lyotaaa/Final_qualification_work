@@ -82,14 +82,6 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductInfo)
 class ProductInfoAdmin(admin.ModelAdmin):
-    # Список информации о продукте
-    # model = ProductInfo
-    # fieldsets = (
-    #     (None, {'fields': ('product', 'model', 'external_id', 'quantity')}),
-    #     ('Цены', {'fields': ('price', 'price_rrc')}),
-    # )
-    # list_display = ('product', 'external_id', 'price', 'price_rrc', 'quantity')
-    # inlines = [ProductParameterInline]
     model = ProductInfo
     list_display = [
         "id",
@@ -115,9 +107,7 @@ class ProductInfoAdmin(admin.ModelAdmin):
 @admin.register(Parameter)
 class ParameterAdmin(admin.ModelAdmin):
     # Список имен параметров
-    model = Parameter
-    list_display = ["id", "name"]
-    search_fields = ("name",)
+    pass
 
 
 @admin.register(ProductParameter)
@@ -157,11 +147,11 @@ class ContactAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     # Список заказов
     model = Order
-    list_display = ["id", "user", "datatime", "contact"]
+    list_display = ["id", "user", "datatime", "contact", "state"]
     search_fields = (
+        "id",
         "user__first_name",
         "user__last_name",
-        "state",
     )
 
 
@@ -176,12 +166,12 @@ class OrderItemAdmin(admin.ModelAdmin):
         "category",
         "shop",
         "quantity",
-        "state",
         "product_info",
     ]
     search_fields = (
         "id",
-        "category",
+        "category__name",
+        "shop__name",
         "quantity",
     )
 

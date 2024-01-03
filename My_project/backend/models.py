@@ -184,6 +184,9 @@ class ProductInfo(models.Model):
             ),
         ]
 
+    def __str__(self):
+        return f"{self.model}"
+
 
 class Parameter(models.Model):
     name = models.CharField(max_length=40, verbose_name="Название")
@@ -204,6 +207,9 @@ class ProductParameter(models.Model):
         related_name="product_parameters",
         blank=True,
         on_delete=models.CASCADE,
+    )
+    product_name = models.CharField(
+        max_length=80, null=True, verbose_name="Название товара"
     )
     parameter = models.ForeignKey(
         Parameter,
@@ -295,9 +301,6 @@ class OrderItem(models.Model):
     )
     shop = models.ForeignKey(
         Shop, verbose_name="магазин", blank=True, null=True, on_delete=models.SET_NULL
-    )
-    product_name = models.CharField(
-        max_length=80, null=True, verbose_name="Название товара"
     )
     product_info = models.ForeignKey(
         ProductInfo,
