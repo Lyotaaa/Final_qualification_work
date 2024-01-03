@@ -4,6 +4,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
 from django.db import models
+from time import gmtime, strftime
 
 STATE_CHOICES = (
     ("basket", "Корзина"),
@@ -185,7 +186,7 @@ class ProductInfo(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.model}"
+        return f"Модель: {self.model}, цена за ед: {self.price_rrc}"
 
 
 class Parameter(models.Model):
@@ -281,7 +282,7 @@ class Order(models.Model):
         ordering = ("-datatime",)
 
     def __str__(self):
-        return str(self.datatime)
+        return f"{self.user} {str(self.datatime)}"
 
 
 class OrderItem(models.Model):
@@ -311,6 +312,7 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE,
     )
     quantity = models.PositiveIntegerField(verbose_name="Количество")
+
 
     class Meta:
         verbose_name = "Заказанная позиция"
