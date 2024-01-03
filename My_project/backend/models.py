@@ -177,7 +177,7 @@ class ProductInfo(models.Model):
 
     class Meta:
         verbose_name = "Информация о продукте"
-        verbose_name_plural = "Список о продуктов"
+        verbose_name_plural = "Список информации о продукте"
         constraints = [
             models.UniqueConstraint(
                 fields=["product", "shop", "external_id"], name="unique_product_info"
@@ -190,7 +190,7 @@ class Parameter(models.Model):
 
     class Meta:
         verbose_name = "Имя параметра"
-        verbose_name_plural = "Список параметров"
+        verbose_name_plural = "Список имен параметров"
         ordering = ("-name",)
 
     def __str__(self):
@@ -286,11 +286,24 @@ class OrderItem(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-
+    category = models.ForeignKey(
+        Category,
+        verbose_name="Категория товара",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    shop = models.ForeignKey(
+        Shop, verbose_name="магазин", blank=True, null=True, on_delete=models.SET_NULL
+    )
+    product_name = models.CharField(
+        max_length=80, null=True, verbose_name="Название товара"
+    )
     product_info = models.ForeignKey(
         ProductInfo,
         verbose_name="Информация о продукте",
         related_name="ordered_items",
+        null=True,
         blank=True,
         on_delete=models.CASCADE,
     )
