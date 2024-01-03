@@ -38,7 +38,7 @@
 ### Исходные данные
  
 1. Общее описание сервиса
-1. [Спецификация (API) - 1 шт.](./reference/screens.md)
+1. [Спецификация (API) - 1 шт.](.Netology/reference/screens.md)
 1. [Файлы yaml для импорта товаров - 1 шт.](./data/shop1.yaml)
 1. [Пример API Сервиса для магазина](./reference//netology_pd_diplom/) 
 
