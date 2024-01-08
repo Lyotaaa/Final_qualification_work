@@ -313,7 +313,6 @@ class OrderItem(models.Model):
     )
     quantity = models.PositiveIntegerField(verbose_name="Количество")
 
-
     class Meta:
         verbose_name = "Заказанная позиция"
         verbose_name_plural = "Список заказанных позиций"
