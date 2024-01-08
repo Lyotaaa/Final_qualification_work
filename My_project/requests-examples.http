@@ -1,0 +1,47 @@
+# примеры API-запросов
+
+@baseUrl = http://localhost:8000/api/v1
+
+# Регистрация пользователя
+POST {{baseUrl}}/user/register
+Content-Type: application/json
+
+{
+  "first_name": "Сергей",
+  "last_name": "Попов",
+  "email": "Popov@ya.ru",
+  "password": "95ffff14567QERg",
+  "company": "Yandex",
+  "position": "Manager",
+  "username": "hutz"
+}
+
+###
+
+# Потверждение email
+POST {{baseUrl}}/user/register/confirm
+Content-Type: application/json
+
+{
+  "email": "Popov@ya.ru",
+  "token": "42e44f13eecee37d644b58ab17e0dc"
+}
+
+###
+
+# Авторизация пользователя
+POST {{baseUrl}}/user/login
+Content-Type: application/json
+
+{
+  "email": "Popov@ya.ru",
+  "password": "95ffff14567QERg"
+}
+
+###
+
+# Поиск товара
+GET {{baseUrl}}/products
+Content-Type: application/json
+
+###
