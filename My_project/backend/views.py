@@ -41,14 +41,18 @@ from backend.signals import new_user_registered_signal, new_order_signal
 def login_required(request):
     if not request.user.is_authenticated:
         return JsonResponse(
-            {"Status": False, "Error": "Требуется вход в систему"}, status=403
+            {"Status": False, "Error": "Требуется вход в систему"},
+            json_dumps_params={"ensure_ascii": False},
+            status=403,
         )
 
 
 def only_for_shops(request):
     if request.user.type != "shop":
         return JsonResponse(
-            {"Status": False, "Error": "Только для магазинов"}, status=403
+            {"Status": False, "Error": "Только для магазинов"},
+            json_dumps_params={"ensure_ascii": False},
+            status=403,
         )
 
 
@@ -78,7 +82,7 @@ class RegisterAccount(APIView):
                 )
             else:
                 # Проверяем данные для уникальности имени пользователя
-                request.data._mutable = True
+                # request.data._mutable = True
                 request.data.update({})
                 user_serializer = UserSerializer(data=request.data)
                 if user_serializer.is_valid():
@@ -86,16 +90,19 @@ class RegisterAccount(APIView):
                     user = user_serializer.save()
                     user.set_password(request.data["password"])
                     user.save()
-                    new_user_registered_signal.send(
-                        sender=self.__class__, user_id=user.id
-                    )
+                    token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user.id)
+                    # new_user_registered_signal.send(
+                    #     sender=self.__class__, user_id=user.id
+                    # )
                     return JsonResponse({"Status": True})
                 else:
                     return JsonResponse(
-                        {"Status": False, "Errors": user_serializer.errors}
+                        {"Status": False, "Errors": user_serializer.errors},
+                        json_dumps_params={"ensure_ascii": False},
                     )
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
 
@@ -115,11 +122,13 @@ class ConfirmAccount(APIView):
                 return JsonResponse({"Status": True})
             else:
                 return JsonResponse(
-                    {"Status": False, "Errors": "Неправильно указан токен или email"}
+                    {"Status": False, "Errors": "Неправильно указан токен или email"},
+                    json_dumps_params={"ensure_ascii": False},
                 )
 
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
 
@@ -173,9 +182,13 @@ class LoginAccount(APIView):
                 if user.is_active:
                     token, _ = Token.objects.get_or_create(user=user)
                     return JsonResponse({"Status": True, "Token": token.key})
-            return JsonResponse({"Status": False, "Errors": "Не удалось авторизовать"})
+            return JsonResponse(
+                {"Status": False, "Errors": "Не удалось авторизовать"},
+                json_dumps_params={"ensure_ascii": False},
+            )
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
 
@@ -264,10 +277,12 @@ class BasketView(APIView):
                             {"Status": False, "Errors": serializer.errors}
                         )
                 return JsonResponse(
-                    {"Status": True, "Создано объектов": objects_created}
+                    {"Status": True, "Создано объектов": objects_created},
+                    json_dumps_params={"ensure_ascii": False},
                 )
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
     # Удалить товары из корзины
@@ -289,7 +304,8 @@ class BasketView(APIView):
                 deleted_count = OrderItem.objects.filter(query).delete()[0]
                 return JsonResponse({"Status": True, "Удалено объектов": deleted_count})
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
     # Добавить позицию в корзину
@@ -317,15 +333,17 @@ class BasketView(APIView):
                             order_id=basket.id, id=order_item["id"]
                         ).update(quantity=order_item["quantity"])
                 return JsonResponse(
-                    {"Status": True, "Обновлено объектов": objects_updated}
+                    {"Status": True, "Обновлено объектов": objects_updated},
+                    json_dumps_params={"ensure_ascii": False},
                 )
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
 
 class PartnerUpdate(APIView):
-    # Класс для обновления пайса от поставщика
+    # Класс для обновления прайса от поставщика
     def post(self, request, *args, **kwargs):
         login_required(request)
         only_for_shops(request)
@@ -371,7 +389,8 @@ class PartnerUpdate(APIView):
                         )
                 return JsonResponse({"Status": True})
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
 
@@ -399,7 +418,8 @@ class PartnerState(APIView):
             except ValueError as error:
                 return JsonResponse({"Status": False, "Errors": str(error)})
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
 
@@ -452,7 +472,8 @@ class ContactView(APIView):
             else:
                 return JsonResponse({"Status": False, "Errors": serializer.errors})
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
     def delete(self, request, *args, **kwargs):
@@ -470,7 +491,8 @@ class ContactView(APIView):
                 deleted_count = Contact.objects.filter(query).delete()[0]
                 return JsonResponse({"Status": True, "Удалено объектов": deleted_count})
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
     # Редактировать контакт
@@ -494,7 +516,8 @@ class ContactView(APIView):
                             {"Status": False, "Errors": serializer.errors}
                         )
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
 
 
@@ -534,7 +557,8 @@ class OrderView(APIView):
                 except IntegrityError as error:
                     print(error)
                     return JsonResponse(
-                        {"Status": False, "Errors": "Неправильно указаны аргументы"}
+                        {"Status": False, "Errors": "Неправильно указаны аргументы"},
+                        json_dumps_params={"ensure_ascii": False},
                     )
                 else:
                     if is_updated:
@@ -543,5 +567,6 @@ class OrderView(APIView):
                         )
                         return JsonResponse({"Status": True})
         return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"}
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
         )
