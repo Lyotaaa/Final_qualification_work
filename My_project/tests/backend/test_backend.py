@@ -1,7 +1,7 @@
 import pytest
 from model_bakery import baker
 from rest_framework.test import APIClient
-from backend.models import User, ConfirmEmailToken
+from backend.models import User, ConfirmEmailToken, Shop, Product, Category
 from rest_framework.authtoken.models import Token
 
 new_user = {
@@ -14,19 +14,21 @@ new_user = {
 }
 
 dict_url = {
+    "register": "/api/v1/user/register",
+    "confirm": "/api/v1/user/register/confirm",
+    "login": "/api/v1/user/login",
+    "details": "/api/v1/user/details",
+    "contact": "/api/v1/user/contact",
+    "shops": "/api/v1/shops",
+    "categories": "/api/v1/categories",
+
+    "products": "/api/v1/products",
+    "order": "/api/v1/order",
+
     "update": "/api/v1/partner/update",
     "state": "/api/v1/partner/state",
     "orders": "/api/v1/partner/orders",
-    "register": "/api/v1/user/register",
-    "confirm": "/api/v1/user/register/confirm",
-    "details": "/api/v1/user/details",
-    "contact": "/api/v1/user/contact",
-    "login": "/api/v1/user/login",
-    "categories": "/api/v1/categories",
-    "shops": "/api/v1/shops",
-    "products": "/api/v1/products",
     "basket": "/api/v1/basket",
-    "order": "/api/v1/order",
 }
 
 
@@ -79,6 +81,30 @@ def login_user(client, user, confirm_user):
     return response_login
 
 
+@pytest.fixture
+def shop_factory():
+    def factory(*args, **kwargs):
+        return baker.make(Shop, *args, **kwargs)
+
+    return factory
+
+
+@pytest.fixture
+def product_factory():
+    def factory(*args, **kwargs):
+        return baker.make(Product, *args, **kwargs)
+
+    return factory
+
+
+@pytest.fixture
+def categories_factory():
+    def factory(*args, **kwargs):
+        return baker.make(Category, *args, **kwargs)
+
+    return factory
+
+
 @pytest.mark.django_db
 def test_user_register(client):
     user_count = User.objects.count()
@@ -101,7 +127,7 @@ def test_user_register(client):
 
 @pytest.mark.django_db
 def test_user_confirm_and_test_user_login(
-    client, user, register_user, confirm_user, login_user
+        client, user, register_user, confirm_user, login_user
 ):
     # token = ConfirmEmailToken.objects.create(user_id=user.id).key
     # data = {
@@ -128,7 +154,7 @@ def test_user_confirm_and_test_user_login(
 
 @pytest.mark.django_db
 def test_user_details_post_and_get(
-    client, user, register_user, confirm_user, login_user
+        client, user, register_user, confirm_user, login_user
 ):
     data = {
         "id": User.objects.get().id,
@@ -151,7 +177,7 @@ def test_user_details_post_and_get(
 
 @pytest.mark.django_db
 def test_user_contact_post_and_get(
-    client, user, register_user, confirm_user, login_user
+        client, user, register_user, confirm_user, login_user
 ):
     data = {
         "id": 1,
@@ -171,3 +197,43 @@ def test_user_contact_post_and_get(
     assert response_post.status_code == 200
     assert data_post["Status"] == True
     assert data_get[0] == data
+
+
+@pytest.mark.django_db
+def test_get_shop(client, user, shop_factory):
+    shop = shop_factory(_quantity=5)
+    client.force_authenticate(user)
+    response = client.get(dict_url["shops"])
+    data = response.json()
+    assert response.status_code == 200
+    assert data["count"] == 5
+    assert len(data["results"]) == 5
+    request = []
+    response = []
+    for i in range(len(data["results"])):
+        request.append(data["results"][i]["name"])
+        response.append(list(shop)[i].name)
+    assert request.sort() == response.sort()
+
+
+@pytest.mark.django_db
+def test_get_categories(client, user, categories_factory):
+    categories = categories_factory(_quantity=5)
+    client.force_authenticate(user)
+    response = client.get(dict_url["categories"])
+    data = response.json()
+    assert response.status_code == 200
+    assert data["count"] == 5
+    assert len(data["results"]) == 5
+    request = []
+    response = []
+    for i in range(len(data["results"])):
+        request.append(data["results"][i]["name"])
+        response.append(list(categories)[i].name)
+    assert request.sort() == response.sort()
+
+
+# data = {
+#     "partner": 1,
+#     "url": "https://github.com/Lyotaaa/Final_qualification_work/edit/main/Netology/data/shop1.yaml"
+# }
