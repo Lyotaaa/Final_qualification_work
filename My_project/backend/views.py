@@ -463,7 +463,7 @@ class ContactView(APIView):
     def post(self, request, *args, **kwargs):
         login_required(request)
         if {"city", "street", "phone"}.issubset(request.data):
-            request.data._mutable = True
+            # request.data._mutable = True
             request.data.update({"user": request.user.id})
             serializer = ContactSerializer(data=request.data)
             if serializer.is_valid():
