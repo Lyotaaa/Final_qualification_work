@@ -94,7 +94,7 @@ class RegisterAccount(APIView):
                     # new_user_registered_signal.send(
                     #     sender=self.__class__, user_id=user.id
                     # )
-                    return JsonResponse({"Status": True})
+                    return JsonResponse({"Status": True, "token": token.key})
                 else:
                     return JsonResponse(
                         {"Status": False, "Errors": user_serializer.errors},
@@ -119,7 +119,7 @@ class ConfirmAccount(APIView):
                 token.user.is_active = True
                 token.user.save()
                 token.delete()
-                return JsonResponse({"Status": True})
+                return JsonResponse({"Status": True, "token": token.key})
             else:
                 return JsonResponse(
                     {"Status": False, "Errors": "Неправильно указан токен или email"},
