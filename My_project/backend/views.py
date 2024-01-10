@@ -159,7 +159,7 @@ class AccountDetails(APIView):
                     error_array.append(item)
                 return JsonResponse(
                     {"Status": False, "Errors": {"password": error_array}},
-                                        json_dumps_params={"ensure_ascii": False}
+                    json_dumps_params={"ensure_ascii": False},
                 )
             else:
                 request.user.set_password(request.data["password"])
@@ -169,8 +169,9 @@ class AccountDetails(APIView):
             user_serializer.save()
             return JsonResponse({"Status": True})
         else:
-            return JsonResponse({"Status": False, "Errors": user_serializer.errors},
-                                json_dumps_params={"ensure_ascii": False},
+            return JsonResponse(
+                {"Status": False, "Errors": user_serializer.errors},
+                json_dumps_params={"ensure_ascii": False},
             )
 
 
@@ -291,7 +292,6 @@ class BasketView(APIView):
             json_dumps_params={"ensure_ascii": False},
         )
 
-
     # Добавить позицию в корзину
     def put(self, request, *args, **kwargs):
         login_required(request)
@@ -342,12 +342,15 @@ class BasketView(APIView):
                     objects_deleted = True
             if objects_deleted:
                 deleted_count = OrderItem.objects.filter(query).delete()[0]
-                return JsonResponse({"Status": True, "Удалено объектов": deleted_count},
-                                    json_dumps_params={"ensure_ascii": False},)
+                return JsonResponse(
+                    {"Status": True, "Удалено объектов": deleted_count},
+                    json_dumps_params={"ensure_ascii": False},
+                )
         return JsonResponse(
             {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
             json_dumps_params={"ensure_ascii": False},
         )
+
 
 class PartnerUpdate(APIView):
     # Класс для обновления прайса от поставщика
