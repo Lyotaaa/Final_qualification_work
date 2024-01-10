@@ -185,8 +185,8 @@ class ProductInfo(models.Model):
             ),
         ]
 
-    def __str__(self):
-        return f"Модель: {self.model}, цена за ед: {self.price_rrc}"
+    # def __str__(self):
+    #     return f"Модель: {self.model}, цена за ед: {self.price_rrc}"
 
 
 class Parameter(models.Model):
