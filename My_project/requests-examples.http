@@ -40,8 +40,165 @@ Content-Type: application/json
 
 ###
 
-# Поиск товара
+# Покажи данные пользователя
+GET {{baseUrl}}/user/details
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+###
+
+# Измени данные пользователя
+POST {{baseUrl}}/user/details
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "first_name": "Алексей",
+  "last_name": "Иванов",
+  "email": "admin@ya.ru",
+  "password": "95ffff14567QERg",
+  "company": "Яндекс",
+  "position": "Manager",
+  "type": "buyer"
+}
+
+###
+
+
+# Показать контактные данные пользователя
+GET {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+###
+
+# Изменить контактные данные пользователя
+POST  {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "id": 1,
+  "city": "Койюг",
+  "street": "Мира",
+  "house": "100",
+  "structure": "1",
+  "building": "2",
+  "apartment": "25",
+  "phone": "+7-999-888-77-66"
+}
+
+###
+
+# Изменить контактные данные пользователя
+PUT  {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "id": "1",
+  "city": "Койюг",
+  "street": "Мира",
+  "house": "100",
+  "structure": "1",
+  "building": "2",
+  "apartment": "25",
+  "phone": "+7-999-888-77-66"
+}
+
+###
+
+# Удалить контактные данные пользователя
+DELETE  {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "items" : "5"
+}
+
+###
+
+# Показать продукты
 GET {{baseUrl}}/products
 Content-Type: application/json
 
 ###
+
+# Показать магазины
+GET {{baseUrl}}/shops
+Content-Type: application/json
+
+###
+
+# Показать категории
+GET {{baseUrl}}/categories
+Content-Type: application/json
+
+###
+
+# Узнать статус
+GET  {{baseUrl}}/partner/state
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+###
+
+# Изменить статус
+POST   {{baseUrl}}/partner/state
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "id": "1",
+  "state": "False"
+}
+
+###
+
+# Показать заказы пользователя
+GET {{baseUrl}}/partner/orders
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+###
+
+# Обновление прайса от поставщика
+POST {{baseUrl}}/partner/update
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "url": 
+  "https://raw.githubusercontent.com/Lyotaaa/Final_qualification_work/main/Netology/data/shop1.yaml"
+}
+
+###
+
+# Получить мои заказы,
+GET {{baseUrl}}/order
+Content-Type: application/json
+Authorization: Token 3fa95a981a08e5f46c9a9645f0c69e770b699ea5
+
+###
+
+# Разместить заказ из корзины
+POST {{baseUrl}}/order
+Content-Type: application/json
+Authorization: Token 3fa95a981a08e5f46c9a9645f0c69e770b699ea5
+
+{
+  "id": "2",
+  "contact": "2",
+  "state": "canceled"
+}
+
+###
+
+# Получить корзину
+GET {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token 5957d5c3947f858f5d05f8be3e0c99afafff12ba
+
+####
+
