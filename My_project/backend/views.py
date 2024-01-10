@@ -1,4 +1,6 @@
 from distutils.util import strtobool
+from pprint import pprint
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -489,7 +491,10 @@ class ContactView(APIView):
                     objects_deleted = True
             if objects_deleted:
                 deleted_count = Contact.objects.filter(query).delete()[0]
-                return JsonResponse({"Status": True, "Удалено объектов": deleted_count})
+                return JsonResponse(
+                    {"Status": True, "Удалено объектов": deleted_count},
+                    json_dumps_params={"ensure_ascii": False},
+                )
         return JsonResponse(
             {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
             json_dumps_params={"ensure_ascii": False},
