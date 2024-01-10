@@ -24,7 +24,7 @@ Content-Type: application/json
 
 {
   "email": "Popov@ya.ru",
-  "token": "42e44f13eecee37d644b58ab17e0dc"
+  "token": "6885113ae2"
 }
 
 ###
@@ -43,19 +43,19 @@ Content-Type: application/json
 # Покажи данные пользователя
 GET {{baseUrl}}/user/details
 Content-Type: application/json
-Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+Authorization: Token 4f35a2145e0402f5e31924171ae71498b9cc6a06
 
 ###
 
 # Измени данные пользователя
 POST {{baseUrl}}/user/details
 Content-Type: application/json
-Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+Authorization: Token 4f35a2145e0402f5e31924171ae71498b9cc6a06
 
 {
   "first_name": "Алексей",
   "last_name": "Иванов",
-  "email": "admin@ya.ru",
+  "email": "che@ya.ru",
   "password": "95ffff14567QERg",
   "company": "Яндекс",
   "position": "Manager",
@@ -68,24 +68,23 @@ Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
 # Показать контактные данные пользователя
 GET {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+Authorization: Token 4f35a2145e0402f5e31924171ae71498b9cc6a06
 
 ###
 
 # Изменить контактные данные пользователя
 POST  {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+Authorization: Token 4f35a2145e0402f5e31924171ae71498b9cc6a06
 
 {
-  "id": 1,
-  "city": "Койюг",
-  "street": "Мира",
-  "house": "100",
+  "city": "Том",
+  "street": "Ленина",
+  "house": "200",
   "structure": "1",
   "building": "2",
   "apartment": "25",
-  "phone": "+7-999-888-77-66"
+  "phone": "+7-555-444-33-22"
 }
 
 ###
@@ -93,17 +92,17 @@ Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
 # Изменить контактные данные пользователя
 PUT  {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+Authorization: Token 4f35a2145e0402f5e31924171ae71498b9cc6a06
 
 {
-  "id": "1",
-  "city": "Койюг",
-  "street": "Мира",
-  "house": "100",
+  "id": "8",
+  "city": "Том",
+  "street": "Ленина",
+  "house": "300",
   "structure": "1",
   "building": "2",
   "apartment": "25",
-  "phone": "+7-999-888-77-66"
+  "phone": "+7-555-444-33-22"
 }
 
 ###
@@ -111,10 +110,10 @@ Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
 # Удалить контактные данные пользователя
 DELETE  {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+Authorization: Token 4f35a2145e0402f5e31924171ae71498b9cc6a06
 
 {
-  "items" : "5"
+  "items" : "9"
 }
 
 ###
@@ -151,7 +150,7 @@ Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
 
 {
   "id": "1",
-  "state": "False"
+  "state": "True"
 }
 
 ###
@@ -170,7 +169,7 @@ Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
 
 {
   "url": 
-  "https://raw.githubusercontent.com/Lyotaaa/Final_qualification_work/main/Netology/data/shop1.yaml"
+  "https://raw.githubusercontent.com/Lyotaaa/Final_qualification_work/main/My_project/data/shop1.yaml"
 }
 
 ###
@@ -198,7 +197,49 @@ Authorization: Token 3fa95a981a08e5f46c9a9645f0c69e770b699ea5
 # Получить корзину
 GET {{baseUrl}}/basket
 Content-Type: application/json
-Authorization: Token 5957d5c3947f858f5d05f8be3e0c99afafff12ba
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
 
 ####
 
+# Отправить в корзину
+POST {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "items": 
+[
+  {
+    "product_info": "3",
+    "quantity": 44
+  }
+]
+}
+
+###
+
+# Изменить заказ
+PUT {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "items": 
+[
+  {
+    "id": 10,
+    "quantity": 13
+  }
+]
+}
+
+###
+
+# Удалить из корзины
+DELETE  {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token dcb47f10d5c351488736bc230d1aaed10d8009c1
+
+{
+  "items": "10"
+}
