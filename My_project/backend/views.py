@@ -1,3 +1,4 @@
+import json
 from distutils.util import strtobool
 from pprint import pprint
 
@@ -157,7 +158,8 @@ class AccountDetails(APIView):
                 for item in password_error:
                     error_array.append(item)
                 return JsonResponse(
-                    {"Status": False, "Errors": {"password": error_array}}
+                    {"Status": False, "Errors": {"password": error_array}},
+                                        json_dumps_params={"ensure_ascii": False}
                 )
             else:
                 request.user.set_password(request.data["password"])
@@ -167,7 +169,9 @@ class AccountDetails(APIView):
             user_serializer.save()
             return JsonResponse({"Status": True})
         else:
-            return JsonResponse({"Status": False, "Errors": user_serializer.errors})
+            return JsonResponse({"Status": False, "Errors": user_serializer.errors},
+                                json_dumps_params={"ensure_ascii": False},
+            )
 
 
 class LoginAccount(APIView):
@@ -254,7 +258,7 @@ class BasketView(APIView):
         items_sting = request.data.get("items")
         if items_sting:
             try:
-                items_dict = load_json(items_sting)
+                items_sting  # load_json(items_sting)
             except ValueError:
                 return JsonResponse(
                     {"Status": False, "Errors": "Неверный формат запроса"}
@@ -264,7 +268,7 @@ class BasketView(APIView):
                     user_id=request.user.id, state="basket"
                 )
                 objects_created = 0
-                for order_item in items_dict:
+                for order_item in items_sting:
                     order_item.update({"order": basket.id})
                     serializer = OrderItemSerializer(data=order_item)
                     if serializer.is_valid():
@@ -280,6 +284,40 @@ class BasketView(APIView):
                         )
                 return JsonResponse(
                     {"Status": True, "Создано объектов": objects_created},
+                    json_dumps_params={"ensure_ascii": False},
+                )
+        return JsonResponse(
+            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
+            json_dumps_params={"ensure_ascii": False},
+        )
+
+
+    # Добавить позицию в корзину
+    def put(self, request, *args, **kwargs):
+        login_required(request)
+        items_sting = request.data.get("items")
+        if items_sting:
+            try:
+                items_sting  # load_json(items_sting)
+            except ValueError:
+                return JsonResponse(
+                    {"Status": False, "Errors": "Неверный формат запроса"}
+                )
+            else:
+                basket, _ = Order.objects.get_or_create(
+                    user_id=request.user.id, state="basket"
+                )
+                objects_updated = 0
+                for order_item in items_sting:
+                    if (
+                        type(order_item["id"]) == int
+                        and type(order_item["quantity"]) == int
+                    ):
+                        objects_updated += OrderItem.objects.filter(
+                            order_id=basket.id, id=order_item["id"]
+                        ).update(quantity=order_item["quantity"])
+                return JsonResponse(
+                    {"Status": True, "Обновлено объектов": objects_updated},
                     json_dumps_params={"ensure_ascii": False},
                 )
         return JsonResponse(
@@ -304,45 +342,12 @@ class BasketView(APIView):
                     objects_deleted = True
             if objects_deleted:
                 deleted_count = OrderItem.objects.filter(query).delete()[0]
-                return JsonResponse({"Status": True, "Удалено объектов": deleted_count})
+                return JsonResponse({"Status": True, "Удалено объектов": deleted_count},
+                                    json_dumps_params={"ensure_ascii": False},)
         return JsonResponse(
             {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
             json_dumps_params={"ensure_ascii": False},
         )
-
-    # Добавить позицию в корзину
-    def put(self, request, *args, **kwargs):
-        login_required(request)
-        items_sting = request.data.get("items")
-        if items_sting:
-            try:
-                items_dict = load_json(items_sting)
-            except ValueError:
-                return JsonResponse(
-                    {"Status": False, "Errors": "Неверный формат запроса"}
-                )
-            else:
-                basket, _ = Order.objects.get_or_create(
-                    user_id=request.user.id, state="basket"
-                )
-                objects_updated = 0
-                for order_item in items_dict:
-                    if (
-                        type(order_item["id"]) == int
-                        and type(order_item["quantity"]) == int
-                    ):
-                        objects_updated += OrderItem.objects.filter(
-                            order_id=basket.id, id=order_item["id"]
-                        ).update(quantity=order_item["quantity"])
-                return JsonResponse(
-                    {"Status": True, "Обновлено объектов": objects_updated},
-                    json_dumps_params={"ensure_ascii": False},
-                )
-        return JsonResponse(
-            {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
-            json_dumps_params={"ensure_ascii": False},
-        )
-
 
 class PartnerUpdate(APIView):
     # Класс для обновления прайса от поставщика
@@ -567,9 +572,9 @@ class OrderView(APIView):
                     )
                 else:
                     if is_updated:
-                        new_order_signal.send(
-                            sender=self.__class__, user_id=request.user.id
-                        )
+                        # new_order_signal.send(
+                        #     sender=self.__class__, user_id=request.user.id
+                        # )
                         return JsonResponse({"Status": True})
         return JsonResponse(
             {"Status": False, "Errors": "Не указаны все необходимые аргументы"},
