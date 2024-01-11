@@ -171,5 +171,3 @@ REST_FRAMEWORK = {
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-CELERY_BROKER = env("BROKER")
-CELERY_BACKEND = env("BACKEND")
